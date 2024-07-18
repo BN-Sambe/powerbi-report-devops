@@ -1,6 +1,6 @@
 name: Deployment
 
-# Controls when the workflow will run
+# Controls when the workflow will runn2
 on:
   push:
     branches: [ main ]
