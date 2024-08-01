@@ -1,17 +1,32 @@
-# Authenticate to Power BI service
-$tenantId = $env:TENANT_ID
-$clientId = $env:CLIENT_ID
-$clientSecret = $env:CLIENT_SECRET
+# Parameters
 $workspaceId = $env:WORKSPACE_ID
 $filePath = $env:FILE_PATH
 
-$secureClientSecret = ConvertTo-SecureString $clientSecret -AsPlainText -Force
-$credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $clientId, $secureClientSecret
+# Remove AzureRM modules if present
+$azureRMModules = Get-Module -ListAvailable -Name AzureRM*
+foreach ($module in $azureRMModules) {
+    Uninstall-Module -Name $module.Name -AllVersions -Force
+}
 
-Connect-AzAccount -ServicePrincipal -Credential $credential -Tenant $tenantId
+# Ensure that AzureRM is not loaded in the current session
+Get-Module -Name AzureRM | Remove-Module -Force
 
-# Import the .pbip file to the specified workspace
+# Install Az module
+Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
+
+# Set up module directory
+New-Item -ItemType Directory -Path ".\modules" -ErrorAction SilentlyContinue | Out-Null
+
+# Download and import FabricPS-PBIP module
+@("https://raw.githubusercontent.com/microsoft/Analysis-Services/master/pbidevmode/fabricps-pbip/FabricPS-PBIP.psm1"
+, "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/pbidevmode/fabricps-pbip/FabricPS-PBIP.psd1") | ForEach-Object {
+    Invoke-WebRequest -Uri $_ -OutFile ".\modules\$(Split-Path $_ -Leaf)"
+}
+
+Import-Module ".\modules\FabricPS-PBIP.psm1" -Force
+
+# Authenticate to Power BI
+Set-FabricAuthToken -reset
+
+# Import the Power BI file
 Import-PowerBIFile -WorkspaceId $workspaceId -FilePath $filePath
-
-# Disconnect from Power BI service
-Disconnect-AzAccount
