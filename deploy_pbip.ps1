@@ -8,6 +8,7 @@ $azureRMModules = Get-Module -Name AzureRM
 # Install Az module
 Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
 
+Install-Module -Name AzureRM -Scope CurrentUser -Force -AllowClobber
 # Set up module directory
 New-Item -ItemType Directory -Path ".\modules" -ErrorAction SilentlyContinue | Out-Null
 
