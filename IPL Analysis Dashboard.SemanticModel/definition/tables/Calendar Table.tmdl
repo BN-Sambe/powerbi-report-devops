@@ -1,0 +1,38 @@
+table 'Calendar Table'
+	lineageTag: 622ce3b0-05ef-471c-a5a0-94a4cce9288b
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: 80fe6865-ef82-4764-835b-dc8a956233bc
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year = YEAR('Calendar Table'[Date])
+		dataType: int64
+		formatString: 0
+		lineageTag: 7d45de8e-0553-433e-970e-808ed17155d0
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Calendar Table' = calculated
+		mode: import
+		source =
+				
+				CALENDAR(
+				    FIRSTDATE(ipl_matches_2008_2022[match_date]),
+				    LASTDATE(ipl_matches_2008_2022[match_date])
+				)
+
+	annotation PBI_Id = 5c8995019f5c473e8ced2683e77e3a9e
+

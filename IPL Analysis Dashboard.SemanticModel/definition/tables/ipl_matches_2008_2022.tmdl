@@ -1,0 +1,192 @@
+table ipl_matches_2008_2022
+	lineageTag: d84c323a-4146-4d61-afb4-66bd576c7282
+
+	measure 'Title Winner' =
+			
+			VAR max_date =
+			    CALCULATE(
+			        MAX('Calendar Table'[Date]),
+			        ALLSELECTED(ipl_matches_2008_2022),
+			        VALUES(ipl_matches_2008_2022)
+			    )
+			VAR title_winner =
+			    CALCULATE(
+			        SELECTEDVALUE(ipl_matches_2008_2022[winning_team]),
+			        'Calendar Table'[Date] = max_date
+			    )
+			RETURN
+			    title_winner
+		lineageTag: 613314f3-01a0-47a7-88a1-138bcd806bbd
+
+	measure 'Matches won on toss decision' = CALCULATE(COUNTROWS(ipl_matches_2008_2022),ipl_matches_2008_2022[toss_winner]=ipl_matches_2008_2022[winning_team])
+		formatString: 0
+		lineageTag: 14e3330d-6359-48fc-983c-860a99437ae1
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: f1f8f1c4-ddd3-4ef4-8172-7e84ca24d1df
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 71f2b8a1-fb2c-4e6d-92b4-a84fb55cb90d
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e314439f-68d9-43f6-aa4c-41a7a526e425
+		summarizeBy: none
+		sourceColumn: match_date
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column season
+		dataType: string
+		lineageTag: 0d134fda-33ac-4fc0-bd35-ee1afd4e73f4
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_number
+		dataType: string
+		lineageTag: ee94c30d-f3af-4bb0-8ff2-4df17e05d5ca
+		summarizeBy: none
+		sourceColumn: match_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column team1
+		dataType: string
+		lineageTag: 0b5da94e-4939-404e-a3a5-87fb4573c13b
+		summarizeBy: none
+		sourceColumn: team1
+
+		annotation SummarizationSetBy = Automatic
+
+	column team2
+		dataType: string
+		lineageTag: d313f2f8-c7c6-4422-a0f8-393d2c3ffb2c
+		summarizeBy: none
+		sourceColumn: team2
+
+		annotation SummarizationSetBy = Automatic
+
+	column venue
+		dataType: string
+		lineageTag: 3b04eee2-8c28-4069-a559-a4b0e4058cb8
+		summarizeBy: none
+		sourceColumn: venue
+
+		annotation SummarizationSetBy = Automatic
+
+	column toss_winner
+		dataType: string
+		lineageTag: 5e90d82c-3aba-4b17-b52e-cedffd005eed
+		summarizeBy: none
+		sourceColumn: toss_winner
+
+		annotation SummarizationSetBy = Automatic
+
+	column toss_decision
+		dataType: string
+		lineageTag: fcd61e19-7952-488f-97c2-56fccba2c24a
+		summarizeBy: none
+		sourceColumn: toss_decision
+
+		annotation SummarizationSetBy = Automatic
+
+	column superover
+		dataType: string
+		lineageTag: 06f8bc6c-759a-4074-8b33-ccc27e64d4f1
+		summarizeBy: none
+		sourceColumn: superover
+
+		annotation SummarizationSetBy = Automatic
+
+	column winning_team
+		dataType: string
+		lineageTag: 7acacdd1-9de4-4ec1-b711-00aee570a11f
+		summarizeBy: none
+		sourceColumn: winning_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column won_by
+		dataType: string
+		lineageTag: 591c62e3-14f2-4c7f-83ec-2f7fc7be1a2d
+		summarizeBy: none
+		sourceColumn: won_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column margin
+		dataType: string
+		lineageTag: 760a8875-4a3e-41fd-8d5b-a8a52daafc2b
+		summarizeBy: none
+		sourceColumn: margin
+
+		annotation SummarizationSetBy = Automatic
+
+	column method
+		dataType: string
+		lineageTag: ff2388c7-2faa-42c2-9170-8658f1793bdc
+		summarizeBy: none
+		sourceColumn: method
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_of_match
+		dataType: string
+		lineageTag: d2b1f18e-4463-4433-a05f-d8e782a79723
+		summarizeBy: none
+		sourceColumn: player_of_match
+
+		annotation SummarizationSetBy = Automatic
+
+	column umpire1
+		dataType: string
+		lineageTag: b4d7690a-a756-4678-ad65-b19dc9371343
+		summarizeBy: none
+		sourceColumn: umpire1
+
+		annotation SummarizationSetBy = Automatic
+
+	column umpire2
+		dataType: string
+		lineageTag: 813fb15f-1254-48b3-98d4-49464ce84e1e
+		summarizeBy: none
+		sourceColumn: umpire2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ipl_matches_2008_2022 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Bihaag Nepaul\Downloads\IPL Dashboard\drive-download-20240723T103108Z-001\ipl_matches_2008_2022.csv"),[Delimiter=",", Columns=18, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"city", type text}, {"match_date", type text}, {"season", type text}, {"match_number", type text}, {"team1", type text}, {"team2", type text}, {"venue", type text}, {"toss_winner", type text}, {"toss_decision", type text}, {"superover", type text}, {"winning_team", type text}, {"won_by", type text}, {"margin", type text}, {"method", type text}, {"player_of_match", type text}, {"umpire1", type text}, {"umpire2", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","Rising Pune Supergiants","Rising Pune Supergiant",Replacer.ReplaceText,{"team1"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Rising Pune Supergiants","Rising Pune Supergiant",Replacer.ReplaceText,{"team2"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Rising Pune Supergiants","Rising Pune Supergiant",Replacer.ReplaceText,{"winning_team"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","Bengaluru","Bangalore",Replacer.ReplaceText,{"city"})
+				in
+				    #"Replaced Value3"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

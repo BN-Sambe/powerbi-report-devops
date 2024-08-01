@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "IPL Analysis Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "283941a2-f61d-428f-9d3f-0c642b2110a1"
+  }
+}

@@ -1,0 +1,8 @@
+relationship cda42fe0-264d-f00f-1f27-0d69016db489
+	fromColumn: ipl_ball_by_ball_2008_2022.id
+	toColumn: ipl_matches_2008_2022.id
+
+relationship c7687c36-004b-3c7d-2565-7a863679700d
+	fromColumn: ipl_matches_2008_2022.match_date
+	toColumn: 'Calendar Table'.Date
+

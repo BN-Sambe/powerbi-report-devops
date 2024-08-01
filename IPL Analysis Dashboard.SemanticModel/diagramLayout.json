@@ -1,0 +1,61 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 118.6863978494184
+          },
+          "nodeIndex": "ipl_matches_2008_2022",
+          "nodeLineageTag": "d84c323a-4146-4d61-afb4-66bd576c7282",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 364.40046305928342,
+            "y": 0
+          },
+          "nodeIndex": "ipl_ball_by_ball_2008_2022",
+          "nodeLineageTag": "6b50570e-6d2c-4047-b6e5-52c1de5dc81c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 357.85275143862583,
+            "y": 323.10633483629613
+          },
+          "nodeIndex": "Calendar Table",
+          "nodeLineageTag": "622ce3b0-05ef-471c-a5a0-94a4cce9288b",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 3
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 78.357757658120491,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

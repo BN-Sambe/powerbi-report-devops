@@ -1,0 +1,215 @@
+table ipl_ball_by_ball_2008_2022
+	lineageTag: 6b50570e-6d2c-4047-b6e5-52c1de5dc81c
+
+	measure 'Batter Runs' = CONCATENATE(SUM(ipl_ball_by_ball_2008_2022[batsman_run])," Runs")
+		lineageTag: 895e18d2-e0b4-4486-9811-ef9ccc769087
+
+	measure 'Bowler Wickets' = CONCATENATE(SUM('ipl_ball_by_ball_2008_2022'[iswicket_delivery]), " Wickets")
+		lineageTag: 934b24ca-661d-4c65-9f61-b440b419c36a
+
+	measure 'Strike Rate for Batsman' = (SUM(ipl_ball_by_ball_2008_2022[batsman_run])/COUNT(ipl_ball_by_ball_2008_2022[ball_number]))*100
+		lineageTag: 367d0dc2-8836-4885-a47a-eca33b358581
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Economy = ```
+			
+			DIVIDE(
+			    SUMX(
+			        FILTER(
+			            ipl_ball_by_ball_2008_2022,
+			            ipl_ball_by_ball_2008_2022[extra_type] <> "legbyes" && 
+			            ipl_ball_by_ball_2008_2022[extra_type] <> "byes"
+			        ),
+			        ipl_ball_by_ball_2008_2022[total_run]
+			    ), 
+			    COUNT(ipl_ball_by_ball_2008_2022[overs]) / 6
+			)
+			```
+		lineageTag: 362e42b2-6090-4ec0-87f8-56571ab45ddf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average by Bowler' = ```
+			
+			DIVIDE(
+			    SUMX(
+			        FILTER(
+			            ipl_ball_by_ball_2008_2022,
+			            ipl_ball_by_ball_2008_2022[extra_type] <> "legbyes" && 
+			            ipl_ball_by_ball_2008_2022[extra_type] <> "byes"
+			        ),
+			        ipl_ball_by_ball_2008_2022[total_run]
+			    ), 
+			    SUM(ipl_ball_by_ball_2008_2022[iswicket_delivery])
+			)
+			```
+		lineageTag: e742c17a-c58c-47c5-ba32-86b44009b897
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bowling SR' = ```
+			COUNT(ipl_ball_by_ball_2008_2022[bowler]) / SUM(ipl_ball_by_ball_2008_2022[iswicket_delivery])
+			
+			```
+		lineageTag: 76dffb12-6f4e-4c8b-9634-80e38a40263f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1be9d619-4fd4-49c9-937d-c4ab89a8cbee
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column innings
+		dataType: int64
+		formatString: 0
+		lineageTag: a9002247-cc0a-4dd7-9b39-e8b2e56481e6
+		summarizeBy: sum
+		sourceColumn: innings
+
+		annotation SummarizationSetBy = Automatic
+
+	column overs
+		dataType: int64
+		formatString: 0
+		lineageTag: a9761e66-fc61-43ae-95ec-5b920ff090ca
+		summarizeBy: sum
+		sourceColumn: overs
+
+		annotation SummarizationSetBy = Automatic
+
+	column ball_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 28bc347a-ead4-42ed-9b39-7b27c4c4b2dd
+		summarizeBy: sum
+		sourceColumn: ball_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column batter
+		dataType: string
+		lineageTag: aca312c1-de37-4ea5-82b8-df5b81d9e56b
+		summarizeBy: none
+		sourceColumn: batter
+
+		annotation SummarizationSetBy = Automatic
+
+	column bowler
+		dataType: string
+		lineageTag: 88e51d6b-c8af-4006-8622-5b5ef58ecc1e
+		summarizeBy: none
+		sourceColumn: bowler
+
+		annotation SummarizationSetBy = Automatic
+
+	column non_striker
+		dataType: string
+		lineageTag: cc907128-0bdf-461f-b595-f06794f3091f
+		summarizeBy: none
+		sourceColumn: non_striker
+
+		annotation SummarizationSetBy = Automatic
+
+	column extra_type
+		dataType: string
+		lineageTag: 4834f17f-4e3a-4373-ac27-35a157312792
+		summarizeBy: none
+		sourceColumn: extra_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column batsman_run
+		dataType: int64
+		formatString: 0
+		lineageTag: a461f5bd-bea5-49c0-9474-64f8216bf17a
+		summarizeBy: sum
+		sourceColumn: batsman_run
+
+		annotation SummarizationSetBy = Automatic
+
+	column extras_run
+		dataType: int64
+		formatString: 0
+		lineageTag: 44be36a9-4e69-4f3f-a556-ebbbebc9482e
+		summarizeBy: sum
+		sourceColumn: extras_run
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_run
+		dataType: int64
+		formatString: 0
+		lineageTag: 380ea4dd-9b4f-4bb6-b503-d1abe23cb8e5
+		summarizeBy: sum
+		sourceColumn: total_run
+
+		annotation SummarizationSetBy = Automatic
+
+	column non_boundary
+		dataType: int64
+		formatString: 0
+		lineageTag: 264f69d2-ebf1-4d67-af70-80dc81846181
+		summarizeBy: sum
+		sourceColumn: non_boundary
+
+		annotation SummarizationSetBy = Automatic
+
+	column iswicket_delivery
+		dataType: int64
+		formatString: 0
+		lineageTag: dc8ac93d-7f9f-44bd-aea3-af060a9119ac
+		summarizeBy: sum
+		sourceColumn: iswicket_delivery
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_out
+		dataType: string
+		lineageTag: cf03ceb0-b360-40cc-bf1c-2bff8d5f3f5e
+		summarizeBy: none
+		sourceColumn: player_out
+
+		annotation SummarizationSetBy = Automatic
+
+	column dismisal_kind
+		dataType: string
+		lineageTag: d0b7c0b7-8b11-4d3e-8d9e-e658d8321ffd
+		summarizeBy: none
+		sourceColumn: dismisal_kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column fielders_involved
+		dataType: string
+		lineageTag: 3c1447cb-9fb0-4e02-89cc-97be8560ce8c
+		summarizeBy: none
+		sourceColumn: fielders_involved
+
+		annotation SummarizationSetBy = Automatic
+
+	column batting_team
+		dataType: string
+		lineageTag: 9a742937-adca-4db7-918b-b222830bf41b
+		summarizeBy: none
+		sourceColumn: batting_team
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ipl_ball_by_ball_2008_2022 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Bihaag Nepaul\Downloads\IPL Dashboard\drive-download-20240723T103108Z-001\ipl_ball_by_ball_2008_2022.csv"),[Delimiter=",", Columns=17, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"id", Int64.Type}, {"innings", Int64.Type}, {"overs", Int64.Type}, {"ball_number", Int64.Type}, {"batter", type text}, {"bowler", type text}, {"non_striker", type text}, {"extra_type", type text}, {"batsman_run", Int64.Type}, {"extras_run", Int64.Type}, {"total_run", Int64.Type}, {"non_boundary", Int64.Type}, {"iswicket_delivery", Int64.Type}, {"player_out", type text}, {"dismisal_kind", type text}, {"fielders_involved", type text}, {"batting_team", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
