@@ -22,7 +22,11 @@ function Remove-AzureRMModules {
 }
 
 # Remove AzureRM modules
-Remove-AzureRMModules
+try {
+    Remove-AzureRMModules
+} catch {
+    Write-Output "Error during AzureRM module removal. $_"
+}
 
 # Install Az module
 try {
