@@ -9,7 +9,7 @@ foreach ($module in $azureRMModules) {
 }
 
 # Ensure that AzureRM is not loaded in the current session
-Get-Module -Name AzureRM | Remove-Module -Force
+Get-Module -Name AzureRM
 
 # Install Az module
 Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
