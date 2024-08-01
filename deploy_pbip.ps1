@@ -3,13 +3,7 @@ $workspaceId = $env:WORKSPACE_ID
 $filePath = $env:FILE_PATH
 
 # Remove AzureRM modules if present
-$azureRMModules = Get-Module -ListAvailable -Name AzureRM*
-foreach ($module in $azureRMModules) {
-    Uninstall-Module -Name $module.Name -AllVersions -Force
-}
-
-# Ensure that AzureRM is not loaded in the current session
-Get-Module -Name AzureRM 
+$azureRMModules = Get-Module -Name AzureRM 
 
 # Install Az module
 Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
