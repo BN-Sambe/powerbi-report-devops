@@ -1,29 +1,32 @@
-# Parameters 
-$workspaceName = $env:WORKSPACE_NAME
-$pbipSemanticModelPath = $env:PBIP_SEMANTIC_MODEL_PATH
-$pbipReportPath = $env:PBIP_REPORT_PATH
-$currentPath = (Split-Path $MyInvocation.MyCommand.Definition -Parent)
-Set-Location $currentPath
+# Parameters
+$workspaceId = $env:WORKSPACE_ID
+$filePath = $env:FILE_PATH
 
-# Download modules and install
+# Remove AzureRM modules if present
+$azureRMModules = Get-Module -ListAvailable -Name AzureRM*
+foreach ($module in $azureRMModules) {
+    Uninstall-Module -Name $module.Name -AllVersions -Force
+}
+
+# Ensure that AzureRM is not loaded in the current session
+Get-Module -Name AzureRM | Remove-Module -Force
+
+# Install Az module
+Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
+
+# Set up module directory
 New-Item -ItemType Directory -Path ".\modules" -ErrorAction SilentlyContinue | Out-Null
+
+# Download and import FabricPS-PBIP module
 @("https://raw.githubusercontent.com/microsoft/Analysis-Services/master/pbidevmode/fabricps-pbip/FabricPS-PBIP.psm1"
 , "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/pbidevmode/fabricps-pbip/FabricPS-PBIP.psd1") | ForEach-Object {
     Invoke-WebRequest -Uri $_ -OutFile ".\modules\$(Split-Path $_ -Leaf)"
 }
-if(-not (Get-Module Az.Accounts -ListAvailable)) { 
-    Install-Module Az.Accounts -Scope CurrentUser -Force
-}
+
 Import-Module ".\modules\FabricPS-PBIP.psm1" -Force
 
-# Authenticate
+# Authenticate to Power BI
 Set-FabricAuthToken -reset
 
-# Ensure workspace exists
-$workspaceId = New-FabricWorkspace -Name $workspaceName -SkipErrorIfExists
-
-# Import the semantic model and save the item id
-$semanticModelImport = Import-FabricItem -WorkspaceId $workspaceId -Path $pbipSemanticModelPath
-
-# Import the report and ensure it's bound to the previous imported semantic model
-$reportImport = Import-FabricItem -WorkspaceId $workspaceId -Path $pbipReportPath -ItemProperties @{"SemanticModelId" = $semanticModelImport.Id}
+# Import the Power BI file
+Import-PowerBIFile -WorkspaceId $workspaceId -FilePath $filePath

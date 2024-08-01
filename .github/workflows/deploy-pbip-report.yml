@@ -19,6 +19,15 @@ jobs:
 
     - name: Install required PowerShell modules
       run: |
+        # Uninstall AzureRM modules if present
+        $azureRMModules = Get-Module -ListAvailable -Name AzureRM*
+        foreach ($module in $azureRMModules) {
+            Uninstall-Module -Name $module.Name -AllVersions -Force
+        }
+
+        # Ensure that AzureRM is not loaded
+        Get-Module -Name AzureRM | Remove-Module -Force
+
         # Install Az module
         Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
 
