@@ -19,8 +19,13 @@ jobs:
 
     - name: Install required PowerShell modules
       run: |
-        Uninstall-Module -Name AzureRM -AllVersions -Force -Scope CurrentUser
-        Install-Module -Name Az.Accounts -Scope CurrentUser -Force -AllowClobber
+        # Check and remove old AzureRM modules
+        $modules = Get-Module -ListAvailable -Name AzureRM*
+        foreach ($module in $modules) {
+            Uninstall-Module -Name $module.Name -AllVersions -Force
+        }
+        # Install Az module
+        Install-Module -Name Az -Scope CurrentUser -Force -AllowClobber
 
     - name: Download FabricPS-PBIP module
       run: |
@@ -35,7 +40,7 @@ jobs:
         Import-Module ".\modules\FabricPS-PBIP.psm1" -Force
 
     - name: Deploy Power BI Project
-      run: pwsh .\deploy-pbip.ps1
+      run: pwsh .\deploy_pbip.ps1
       env:
         TENANT_ID: ${{ secrets.TENANT_ID }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
