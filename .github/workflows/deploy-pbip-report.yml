@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up PowerShell
-      uses: actions/setup-powershell@v2
+      uses: actions/setup-powershell@v3
 
     - name: Install required PowerShell modules
       run: |
