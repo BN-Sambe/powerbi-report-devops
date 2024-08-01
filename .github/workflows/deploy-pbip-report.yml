@@ -13,12 +13,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up PowerShell
-      uses: actions/setup-powershell@v3
+    - name: Install PowerShell
+      run: |
+        # Install PowerShell
+        iex "& { $(irm https://aka.ms/install-powershell.ps1 -UseBasicP) }"
 
     - name: Install required PowerShell modules
       run: |
-        Install-Module -Name Az.Accounts -Scope CurrentUser -Force
+        Install-Module -Name Az.Accounts -Scope CurrentUser -Force -AllowClobber
 
     - name: Download FabricPS-PBIP module
       run: |
